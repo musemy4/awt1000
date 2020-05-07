@@ -1,37 +1,48 @@
 package awt.ex1000.dos;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
-//»ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ¸í·É¶óÀÎÀÇ ³»¿ëÀ» ÀúÀåÇÏ´Â save(String input)¸Ş¼­µå¿Í 
-//ÀÔ·ÂÇß´ø ÀÌ·ÂÀ» º¸¿©ÁÖ´Â history() ¸Ş¼­µå¸¦ ¿Ï¼ºÇÏ¼¼¿ä
 public class ConsoleEx03 {
 	static Scanner sc = new Scanner(System.in);
+	static String[] argArr; //ì…ë ¥í•œ ë§¤ê°œë³€ìˆ˜ë¥¼ ë‹´ê¸°ìœ„í•œ ë¬¸ìì—´ë°°ì—´
+	static LinkedList<String> q= new LinkedList<String>(); //ì‚¬ìš©ìê°€ ì…ë ¥í•œ ë‚´ìš©ì„ ì €ì¥í•  í(queue)
+	static final int MAX_SIZE = 5;
+	
 	public static void main(String[] args) {
-		String[] tmp;
 		while(true) {
 			String prompt=">> ";
 			System.out.print(prompt);
-			String inputLine=sc.nextLine().trim();
+			String input=sc.nextLine();//í™”ë©´ìœ¼ë¡œë¶€í„° ë¼ì¸ë‹¨ìœ„ë¡œ ì…ë ¥ë°›ëŠ”ë‹¤
 			
-			if(inputLine.toLowerCase().equals("q"))break;
+			save(input);//ê³ ëƒ¥ ë‹¤ ìë™ ì €ì¥ë¨
 			
-			System.out.println(inputLine);
-			tmp=inputLine.split(" ");//³ÎÆ÷ÇÔ************
-			String[] tilt=new String[tmp.length];//Å©±â¸¸ »ı¼º
-			int size=0;
-			for(int i=0;i<tmp.length;i++) {
-				//System.out.println(i+" : "+tmp[i]);
-				if(tmp[i].length()<1)continue;//°ø¹éÀÌ¸é ³Ñ¾î°¡ - nullµµ ¾Æ´Ï°í " "µµ ¾Æ´Ï´Ù
-				else{
-					tilt[size++]=tmp[i];
-				}
+			input=input.trim();
+			argArr=input.split(" +");
+			
+			String command=argArr[0].trim();
+			if("".equals(command))continue;//1.ì•„ë¬´ê²ƒë„ ì…ë ¥ì•ˆë˜ì—ˆì„ì‹œ
+			
+			command=command.toLowerCase();
+			if(command.equals("q"))System.exit(0);
+			else if(command.equals("history")) {//2.historyë¼ê³  ì…ë ¥ë˜ë©´
+				history();
+			} else {
+				for(int i=0;i<argArr.length;i++)
+				System.out.println(argArr[i]);//0.ì¼ë°˜ì¶œë ¥
 			}
-			
-			String[] weArr = new String[size];
-			for(int j=0;j<size;j++) {
-				System.out.println(tilt[j]);
-				weArr[j]=tilt[j];
-			}
+		}
+	}
+	
+	static void save(String in) {
+		if(in==null||"".equals(in))return;
+		if(q.size()==MAX_SIZE)q.removeFirst();
+		q.add(in);
+	}
+	
+	static void history() {
+		for(int i=0;i<MAX_SIZE;i++) {
+			System.out.println((i+1)+". "+q.get(i));
 		}
 	}
 
