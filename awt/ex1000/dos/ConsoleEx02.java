@@ -2,7 +2,7 @@ package awt.ex1000.dos;
 
 import java.util.Scanner;
 
-public class ConsoleEx02 {
+public class ConsoleEx02_1 {
 	static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args) {
 		String[] tmp;
@@ -14,22 +14,12 @@ public class ConsoleEx02 {
 			if(inputLine.toLowerCase().equals("q"))break;
 			
 			System.out.println(inputLine);
-			tmp=inputLine.split(" ");//³ÎÆ÷ÇÔ
-			String[] tilt=new String[tmp.length];//Å©±â¸¸ »ý¼º
-			int size=0;
-			for(int i=0;i<tmp.length;i++) {
-				//System.out.println(i+" : "+tmp[i]);
-				if(tmp[i].length()<1)continue;//°ø¹éÀÌ¸é ³Ñ¾î°¡ - nullµµ ¾Æ´Ï°í " "µµ ¾Æ´Ï´Ù
-				else{
-					tilt[size++]=tmp[i];
-				}
+			tmp=inputLine.split(" +");//ê³µë°±ì—¬ëŸ¬ê°œë„ ê·¸ëƒ¥ í•˜ë‚˜ë¡œ ì¹¨************ì–´ë–»ê²Œ..?
+			
+			for(String s : tmp) {
+				System.out.println(s);
 			}
 			
-			String[] weArr = new String[size];
-			for(int j=0;j<size;j++) {
-				System.out.println(tilt[j]);
-				weArr[j]=tilt[j];
-			}
 		}
 	}
 
