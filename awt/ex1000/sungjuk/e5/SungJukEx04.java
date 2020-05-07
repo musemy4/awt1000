@@ -5,7 +5,7 @@ import java.util.*;
 class ClassTotalComparator implements Comparator<Student>{
 	@Override
 	public int compare(Student o1, Student o2) {
-		if(o1.getBan()!=o2.getBan())//¹İÀÌ ´Ù¸£¸é ¿À¸§Â÷¼ø¹İ¼øÀ¸·Î
+		if(o1.getBan()!=o2.getBan())//ë°˜ì´ ë‹¤ë¥´ë©´ ì˜¤ë¦„ì°¨ìˆœë°˜ìˆœìœ¼ë¡œ
 			return o1.getBan()-o2.getBan();
 		
 		return (o1.getTotal()-o2.getTotal())*-1; 
@@ -15,39 +15,48 @@ class ClassTotalComparator implements Comparator<Student>{
 class ClassStudentComparator implements Comparator<Student>{
 	@Override
 	public int compare(Student o1, Student o2) {
-		if(o1.getBan()!=o2.getBan())//¹İÀÌ ´Ù¸£¸é ¿À¸§Â÷¼ø¹İ¼øÀ¸·Î
+		if(o1.getBan()!=o2.getBan())//ë°˜ì´ ë‹¤ë¥´ë©´ ì˜¤ë¦„ì°¨ìˆœë°˜ìˆœìœ¼ë¡œ
 			return o1.getBan()-o2.getBan();
 		
 		return o1.getNo()-o2.getNo(); 
 	}
 }
 
-public class SungJukEx04 {
+public class SungJukEx05 {
 
 	public static void main(String[] args) {
 		ArrayList<Student> list = new ArrayList<Student>(); 
 		
-		// ÀÌ¸§, ¹İ, ¹øÈ£, ±¹¾î, ¼öÇĞ, ¿µ¾î 
-        list.add(new Student("³²±Ã¼º", 3,2,100,100,100));
-        list.add(new Student("¿ÕÀÚ¹Ù", 3,1,90,100,80));
-        list.add(new Student("ÀÚ¹Ù¿Õ", 3,3,70,100,100));
-        list.add(new Student("Å·¿ÕÂ¯", 1,2,100,60,90));
-        list.add(new Student("ÀÚ¹ÙÂ¯", 1,1,100,100,100));
-        list.add(new Student("ÃÖ°í¼ö", 1,3,100,80,60));
-        list.add(new Student("È«±æµ¿", 2,1,50,80,100));
-        list.add(new Student("ÀÏÁö¸Å", 2,3,70,80,100));
-        list.add(new Student("º¯°­¼è", 2,4,80,80,85));
-        list.add(new Student("ÀÌ¿ø±¸", 2,2,90,90,90));
+		// ì´ë¦„, ë°˜, ë²ˆí˜¸, êµ­ì–´, ìˆ˜í•™, ì˜ì–´ 
+        list.add(new Student("ë‚¨ê¶ì„±", 3,2,100,100,100));
+        list.add(new Student("ì™•ìë°”", 3,1,90,100,80));
+        list.add(new Student("ìë°”ì™•", 3,3,70,100,100));
+        list.add(new Student("í‚¹ì™•ì§±", 1,2,100,60,90));
+        list.add(new Student("ìë°”ì§±", 1,1,100,100,100));
+        list.add(new Student("ìµœê³ ìˆ˜", 1,3,100,80,60));
+        list.add(new Student("í™ê¸¸ë™", 2,1,50,80,100));
+        list.add(new Student("ì¼ì§€ë§¤", 2,3,70,80,100));
+        list.add(new Student("ë³€ê°•ì‡ ", 2,4,80,80,85));
+        list.add(new Student("ì´ì›êµ¬", 2,2,90,90,90));
 
+        System.out.println("[ì „ì²´ ì„ì°¨ë§¤ê¸°ê¸°]");
         Collections.sort(list);
-        caculateSchoolRank(list);
+        calculateSchoolRank(list);
+        printList(list);
+        
+        System.out.println();
+
+        Collections.sort(list, new ClassTotalComparator());
+        
+        
+        System.out.println("[ë°˜ë“±ìˆ˜ë§¤ê¸°ê¸°]");        
         calculateClassRank(list);
         printList(list);
         
 	}
 	
 	public static void printList(List<Student> list) {
-		System.out.println("ÀÌ¸§\t¹İ\t¹øÈ£\t±¹¾î\t¼öÇĞ\t¿µ¾î\tÃÑÁ¡\t¼®Â÷\t¹İµî¼ö");
+		System.out.println("ì´ë¦„\të°˜\të²ˆí˜¸\têµ­ì–´\tìˆ˜í•™\tì˜ì–´\tì´ì \tì„ì°¨\të°˜ë“±ìˆ˜");
 		System.out.println("======================================================================");
 		
 		for(Student s: list) {
@@ -57,17 +66,39 @@ public class SungJukEx04 {
 		
 	}
 	
+	//ë™ì ìì²˜ë¦¬ë¥¼ ìœ„í•œ
 	public static void calculateClassRank(List<Student> list) {
-		
-		
-	}
-	
-	public static void caculateSchoolRank(List<Student> list) {
-		int prevTotal=0; //µ¿Á¡ÀÚÃ³¸®
+		int prevTotal=0;
+		int prevBan=0;
 		int rank=0;
 		
-		for(int i=0;i<list.size();i++) {//Á¤·ÄµÇ¾îÀÖ±â¶§¹®¿¡
-			if(prevTotal!=list.get(i).getTotal()) {//ÃÑÁ¡ÀÌ ´Ù¸£¸é ÀÛ´Ù´Â¾ê±â´Ù
+		for(int i=0;i<list.size();i++) {
+			if(prevBan!=list.get(i).getBan()) {//ë°˜ì´ ë‹¬ë¼ì§€ë©´
+				rank=0; //ìˆœìœ„ ì´ˆê¸°í™”
+				prevTotal=0;
+				prevBan=list.get(i).getBan();
+			}
+			
+			if(prevTotal!=list.get(i).getTotal()) {//ì´ì ì´ ë‹¤ë¥´ë©´
+				prevTotal=list.get(i).getTotal();
+				list.get(i).setClassRank(++rank);
+			} else {
+				list.get(i).setClassRank(list.get(i-1).getClassRank());
+				++rank;
+			}
+			
+			
+		}//for end
+		
+	}//calculateClassRank end
+	
+	//ë™ì ìì²˜ë¦¬ë¥¼ ìœ„í•œ
+	public static void calculateSchoolRank(List<Student> list) {
+		int prevTotal=0; 
+		int rank=0;
+		
+		for(int i=0;i<list.size();i++) {//ì •ë ¬ë˜ì–´ìˆê¸°ë•Œë¬¸ì—
+			if(prevTotal!=list.get(i).getTotal()) {//ì´ì ì´ ë‹¤ë¥´ë©´ ì‘ë‹¤ëŠ”ì–˜ê¸°ë‹¤
 				prevTotal=list.get(i).getTotal();
 				list.get(i).setSchoolRank(++rank);
 			}else {
@@ -75,6 +106,6 @@ public class SungJukEx04 {
 				++rank;
 			}
 		}
-	}
+	}//ca
 
 }
