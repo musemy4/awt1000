@@ -1,27 +1,63 @@
 package awt.ex1000.dos;
 
-import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
-//»ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ ¸í·É¶óÀÎÀÇ ³»¿ëÀ» ÀúÀåÇÏ´Â save(String input)¸Ş¼­µå¿Í 
-//ÀÔ·ÂÇß´ø ÀÌ·ÂÀ» º¸¿©ÁÖ´Â history() ¸Ş¼­µå¸¦ ¿Ï¼ºÇÏ¼¼¿ä
+//ì‚¬ìš©ì ì…ë ¥ì„ ë°›ëŠ” í”„ë¡¬í”„íŠ¸ì— í˜„ì¬ ì‘ì—…ì¤‘ì¸ í´ë”(ë””ë ‰í† ë¦¬)ì˜ ê²½ë¡œë¥¼ í‘œì‹œí•´ë³´ì
 public class ConsoleEx04 {
 	static Scanner sc = new Scanner(System.in);
+	static String[] argArr; //ì…ë ¥í•œ ë§¤ê°œë³€ìˆ˜ë¥¼ ë‹´ê¸°ìœ„í•œ ë¬¸ìì—´ë°°ì—´
+	static LinkedList<String> q= new LinkedList<String>(); //ì‚¬ìš©ìê°€ ì…ë ¥í•œ ë‚´ìš©ì„ ì €ì¥í•  í(queue)
+	static final int MAX_SIZE = 5;
+	
+	static File curDir;//í˜„ì¬ë””ë ‰í† ë¦¬
+	
+	static {//*********
+		try {
+			curDir=new File(System.getProperty("user.dir"));
+		} catch (Exception e) {}
+	}
+	
+	
 	public static void main(String[] args) {
-		String[] tmp;
 		while(true) {
-			String prompt=">> ";
-			System.out.print(prompt);
-			String inputLine=sc.nextLine().trim();
-			
-			if(inputLine.toLowerCase().equals("q"))break;
-			
-			System.out.println(inputLine);
-			tmp=inputLine.split(" +");//°ø¹é¿©·¯°³µµ ±×³É ÇÏ³ª·Î Ä§************¾î¶»°Ô..?
-			
-			for(String s : tmp) {
-				System.out.println(s);
+			try {
+				String prompt=curDir.getCanonicalPath()+">> ";
+				System.out.print(prompt);
+				String input=sc.nextLine();//í™”ë©´ìœ¼ë¡œë¶€í„° ë¼ì¸ë‹¨ìœ„ë¡œ ì…ë ¥ë°›ëŠ”ë‹¤
+				
+				save(input);//ê³ ëƒ¥ ë‹¤ ìë™ ì €ì¥ë¨
+				
+				input=input.trim();
+				argArr=input.split(" +");
+				
+				String command=argArr[0].trim();
+				if("".equals(command))continue;//1.ì•„ë¬´ê²ƒë„ ì…ë ¥ì•ˆë˜ì—ˆì„ì‹œ
+				
+				command=command.toLowerCase();
+				if(command.equals("q"))System.exit(0);
+				else if(command.equals("history")) {//2.historyë¼ê³  ì…ë ¥ë˜ë©´
+					history();
+				} else {
+					for(int i=0;i<argArr.length;i++)
+					System.out.println(argArr[i]);//0.ì¼ë°˜ì¶œë ¥
+				}
+			} catch (IOException e) {
+				System.out.println("ì…ë ¥ì˜¤ë¥˜ì…ë‹ˆë‹¤");
 			}
-			
+		}
+	}
+	
+	static void save(String in) {
+		if(in==null||"".equals(in))return;
+		if(q.size()==MAX_SIZE)q.removeFirst();
+		q.add(in);
+	}
+	
+	static void history() {
+		for(int i=0;i<MAX_SIZE;i++) {
+			System.out.println((i+1)+". "+q.get(i));
 		}
 	}
 
